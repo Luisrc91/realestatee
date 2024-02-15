@@ -85,19 +85,19 @@ export default function Profile() {
         <input
           id="username"
           type="text"
-          className="boerder p-3 rounded-lg"
+          className="border p-3 rounded-lg"
           placeholder="username"
         />
         <input
           id="email"
           type="text"
-          className="boerder p-3 rounded-lg"
+          className="border p-3 rounded-lg"
           placeholder="email"
         />
         <input
           id="password"
           type="text"
-          className="boerder p-3 rounded-lg"
+          className="border p-3 rounded-lg"
           placeholder="password"
         />
         <button className="bg-slate-700 text-white rounded-lg p-3 uppercase hover:opacity-95 disabled:op88">
