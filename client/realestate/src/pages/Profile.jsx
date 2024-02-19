@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux";
 import { useEffect, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
 import {
   getDownloadURL,
   getStorage,
@@ -12,11 +13,12 @@ import {
   updateUserSuccess,
   updateUserFailure,
 } from "../redux/user/useSlice";
-import { useDispatch } from "react-redux";
+
+
 
 export default function Profile() {
   const fileRef = useRef(null);
-  const { currentUser } = useSelector((state) => state.user);
+  const { currentUser, loading, error } = useSelector((state) => state.user);
   const [file, setFile] = useState(undefined);
   const [filePerc, setFilePerc] = useState(0);
   const [fileUploadError, setFileUploadError] = useState(false);
@@ -53,14 +55,14 @@ export default function Profile() {
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) =>
-          setFormData({ ...FormData, avatar: downloadURL })
+          setFormData({ ...formData, avatar: downloadURL })
         );
       }
     );
   };
 
   const handleChange = (e) => {
-    setFormData({ ...FormData, [e.target.id]: e.target.value });
+    setFormData({ ...formData, [e.target.id]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
@@ -131,18 +133,18 @@ export default function Profile() {
           type="text"
           className="border p-3 rounded-lg"
           placeholder="email"
-          defaultValue={currentUser.username}
+          defaultValue={currentUser.email}
           onChange={handleChange}
         />
         <input
           id="password"
-          type="text"
+          type="password"
           className="border p-3 rounded-lg"
           placeholder="password"
           onChange={handleChange}
         />
-        <button className="bg-slate-700 text-white rounded-lg p-3 uppercase hover:opacity-95 disabled:op88">
-          Update
+        <button disabled={loading} className="bg-slate-700 text-white rounded-lg p-3 uppercase hover:opacity-95 disabled:op88">
+            {loading ? "Loading..." : 'update'}
         </button>
       </form>
 
@@ -150,6 +152,8 @@ export default function Profile() {
         <span className="text-red-700 cursor-pointer">Delete account</span>
         <span className="text-red-700 cursor-pointer">Sign out</span>
       </div>
+      <p className="text-red-700 mt-5">{error ? error : ''}</p>
+      <p className="text-green-700 mt-5">{updateSuccess ? `User is updated successfully!` : ''}</p>
     </div>
   );
 }
