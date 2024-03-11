@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Listingitem from "../components/Listingitem";
 
 export default function Search() {
   const navigate = useNavigate();
@@ -14,8 +15,8 @@ export default function Search() {
     sort: "created_at",
     order: "desc",
   });
-  const [loading, setLoading] = useState(false)
-  const [ listings, setListings] = useState([])
+  const [loading, setLoading] = useState(false);
+  const [listings, setListings] = useState([]);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
@@ -23,9 +24,9 @@ export default function Search() {
     const typeFromUrl = urlParams.get("type");
     const parkingFromUrl = urlParams.get("parking");
     const furnishedFromUrl = urlParams.get("furnished");
-    const orderFromUrl = urlParams.get("order");
-    const sortFromUrl = urlParams.get("sort");
     const offerFromUrl = urlParams.get("offer");
+    const sortFromUrl = urlParams.get("sort");
+    const orderFromUrl = urlParams.get("order");
 
     if (
       searchTermFromUrl ||
@@ -46,18 +47,16 @@ export default function Search() {
         order: orderFromUrl || "desc",
       });
     }
-    const fetchListings = async() =>{
+    const fetchListings = async () => {
       setLoading(true);
-      const searchQuery = urlParams.toString()
-      const res = await fetch(`/api/listing/listings/get?${searchQuery}`)
-      const data = await res.json()
+      const searchQuery = urlParams.toString();
+      const res = await fetch(`/api/listing/get?${searchQuery}`);
+      const data = await res.json();
       setListings(data);
       setLoading(false);
-
-    }
-    fetchListings()
-
-  },[location.search]);
+    };
+    fetchListings();
+  }, [location.search]);
 
   // console.log(sidebardata);
   const handleChange = (e) => {
@@ -204,13 +203,26 @@ export default function Search() {
           </button>
         </form>
       </div>
-      <div className="">
+      <div className="flex-1">
         <h1
-          className="text-3xl font-semibold border-b p-3 text-slate-700 mt-5
-        "
-        >
+          className="text-3xl font-semibold border-b p-3 text-slate-700 mt-5">
           Listing Results:
         </h1>
+        <div className="p-7  flex-wrap gap-4">
+          {!loading && listings.length === 0 && (
+            <p className="text-xl text-slate-700"> No listing found!</p>
+          )}
+          {loading && (
+            <p className="text-xl text-slate-700 text-center w-full">
+              Loading...
+            </p>
+          )}
+          {!loading &&
+            listings &&
+            listings.map((listing) => (
+              <Listingitem key={listing._id} listing={listing} />
+            ))}
+        </div>
       </div>
     </div>
   );
