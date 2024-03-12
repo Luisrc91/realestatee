@@ -1,6 +1,6 @@
 // import React from 'react'
-import { MdLocationOn } from "react-icons/md";
 import { Link } from "react-router-dom";
+import { MdLocationOn } from "react-icons/md";
 
 export default function Listingitem({ listing }) {
   return (
@@ -35,12 +35,12 @@ export default function Listingitem({ listing }) {
             <div className="font-bold text-xs">
               {listing.bedrooms > 1
                 ? `${listing.bedrooms} beds `
-                : `${lsiting.bedrooms} bed`}
+                : `${listing.bedrooms} bed`}
             </div>
             <div className="font-bold text-xs">
               {listing.bathrooms > 1
                 ? `${listing.bathrooms} baths `
-                : `${lsiting.bathrooms} bath`}
+                : `${listing.bathrooms} bath`}
             </div>
           </div>
         </div>
